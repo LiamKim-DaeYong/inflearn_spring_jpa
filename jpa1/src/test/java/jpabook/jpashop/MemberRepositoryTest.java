@@ -16,7 +16,6 @@ class MemberRepositoryTest {
 
     @Test
     @Transactional
-    @Rollback(false)
     void testMember() {
         //given
         Member member = new Member();
