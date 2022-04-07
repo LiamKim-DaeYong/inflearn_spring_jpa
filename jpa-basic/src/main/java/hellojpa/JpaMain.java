@@ -4,7 +4,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
 
 public class JpaMain {
 
@@ -16,21 +15,19 @@ public class JpaMain {
         tx.begin();
 
         try {
-            //비영속
-            Member member = new Member();
-            member.setId(101L);
-            member.setName("HelloA");
-
             //영속
-            System.out.println("=== BEFORE ===");
+            Member member = new Member(200L, "member200");
             em.persist(member);
-            System.out.println("=== AFTER ===");
 
-            Member findMember = em.find(Member.class, 101L);
+            //준영속
+            em.detach(member);
+            em.clear();
+            em.close();
 
-            System.out.println("findMember.id = " + findMember.getId());
-            System.out.println("findMember.name = " + findMember.getName());
+            // flush -> 변경감지 -> 쓰기지연 SQL 쿼리 DB 반영
+            em.flush();
 
+            // commit
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
