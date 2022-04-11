@@ -15,20 +15,7 @@ public class JpaMain {
         tx.begin();
 
         try {
-            //영속
-            Member member = new Member(200L, "member200");
-            em.persist(member);
 
-            //준영속
-            em.detach(member);
-            em.clear();
-            em.close();
-
-            // flush -> 변경감지 -> 쓰기지연 SQL 쿼리 DB 반영
-            em.flush();
-
-            // commit
-            tx.commit();
         } catch (Exception e) {
             tx.rollback();
         } finally {
